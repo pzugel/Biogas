@@ -1,0 +1,107 @@
+Determining if the function sgemm_ exists failed with the following output:
+Change Dir: /home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_cc9bb/fast && /usr/bin/make  -f CMakeFiles/cmTC_cc9bb.dir/build.make CMakeFiles/cmTC_cc9bb.dir/build
+make[1]: Entering directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cc9bb.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCHECK_FUNCTION_EXISTS=sgemm_ -o CMakeFiles/cmTC_cc9bb.dir/CheckFunctionExists.c.o -c /usr/local/share/cmake-3.18/Modules/CheckFunctionExists.c
+Linking C executable cmTC_cc9bb
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cc9bb.dir/link.txt --verbose=1
+/usr/bin/cc  -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCHECK_FUNCTION_EXISTS=sgemm_ -rdynamic CMakeFiles/cmTC_cc9bb.dir/CheckFunctionExists.c.o -o cmTC_cc9bb 
+CMakeFiles/cmTC_cc9bb.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text.startup+0xc): undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_cc9bb.dir/build.make:105: recipe for target 'cmTC_cc9bb' failed
+make[1]: *** [cmTC_cc9bb] Error 1
+make[1]: Leaving directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_cc9bb/fast' failed
+make: *** [cmTC_cc9bb/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e3a54/fast && /usr/bin/make  -f CMakeFiles/cmTC_e3a54.dir/build.make CMakeFiles/cmTC_e3a54.dir/build
+make[1]: Entering directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e3a54.dir/src.c.o
+/usr/bin/cc   -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCMAKE_HAVE_LIBC_PTHREAD -o CMakeFiles/cmTC_e3a54.dir/src.c.o -c /home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_e3a54
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e3a54.dir/link.txt --verbose=1
+/usr/bin/cc  -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCMAKE_HAVE_LIBC_PTHREAD -rdynamic CMakeFiles/cmTC_e3a54.dir/src.c.o -o cmTC_e3a54 
+CMakeFiles/cmTC_e3a54.dir/src.c.o: In function `main':
+src.c:(.text.startup+0x23): undefined reference to `pthread_create'
+src.c:(.text.startup+0x2c): undefined reference to `pthread_detach'
+src.c:(.text.startup+0x35): undefined reference to `pthread_cancel'
+src.c:(.text.startup+0x40): undefined reference to `pthread_join'
+src.c:(.text.startup+0x4b): undefined reference to `pthread_atfork'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_e3a54.dir/build.make:105: recipe for target 'cmTC_e3a54' failed
+make[1]: *** [cmTC_e3a54] Error 1
+make[1]: Leaving directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_e3a54/fast' failed
+make: *** [cmTC_e3a54/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ec061/fast && /usr/bin/make  -f CMakeFiles/cmTC_ec061.dir/build.make CMakeFiles/cmTC_ec061.dir/build
+make[1]: Entering directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ec061.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_ec061.dir/CheckFunctionExists.c.o -c /usr/local/share/cmake-3.18/Modules/CheckFunctionExists.c
+Linking C executable cmTC_ec061
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ec061.dir/link.txt --verbose=1
+/usr/bin/cc  -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCHECK_FUNCTION_EXISTS=pthread_create -rdynamic CMakeFiles/cmTC_ec061.dir/CheckFunctionExists.c.o -o cmTC_ec061  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ec061.dir/build.make:105: recipe for target 'cmTC_ec061' failed
+make[1]: *** [cmTC_ec061] Error 1
+make[1]: Leaving directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_ec061/fast' failed
+make: *** [cmTC_ec061/fast] Error 2
+
+
+
+Determining if the function cheev_ exists failed with the following output:
+Change Dir: /home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_fe996/fast && /usr/bin/make  -f CMakeFiles/cmTC_fe996.dir/build.make CMakeFiles/cmTC_fe996.dir/build
+make[1]: Entering directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fe996.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCHECK_FUNCTION_EXISTS=cheev_ -o CMakeFiles/cmTC_fe996.dir/CheckFunctionExists.c.o -c /usr/local/share/cmake-3.18/Modules/CheckFunctionExists.c
+Linking C executable cmTC_fe996
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe996.dir/link.txt --verbose=1
+/usr/bin/cc  -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -DCHECK_FUNCTION_EXISTS=cheev_ -rdynamic CMakeFiles/cmTC_fe996.dir/CheckFunctionExists.c.o -o cmTC_fe996  /usr/lib/x86_64-linux-gnu/libblas.so -lpthread -lm -ldl 
+CMakeFiles/cmTC_fe996.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text.startup+0xc): undefined reference to `cheev_'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_fe996.dir/build.make:106: recipe for target 'cmTC_fe996' failed
+make[1]: *** [cmTC_fe996] Error 1
+make[1]: Leaving directory '/home/paul/Schreibtisch/Biogas_LabView_Wrapper/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_fe996/fast' failed
+make: *** [cmTC_fe996/fast] Error 2
+
+
+

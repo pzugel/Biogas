@@ -1,0 +1,246 @@
+pSettings = {
+    numericalSetup={
+      sim_starttime=0,
+      sim_endtime=10
+    },
+    reactorSetup={
+      operatingTemperature=311.15,
+      realReactorVolume=34.5,
+      reactorType="CSTR"
+    },
+    outputSpecs={
+      customSetting={
+        developer=true,
+        debug=true,
+        vtk=false,
+        cDigestate=true,
+        biogas=true
+      }
+    },
+    checkpoint={
+      doReadCheckpoint=false
+    },
+    feeding={
+      stoidisintegration={
+        Lipids=0.03186022610483,
+        Proteins=0.077697841726619,
+        Carbohydrates=0.65927235354573
+      },
+      volatile=0.973,
+      timetable={
+{
+0,
+243
+        },
+{
+24,
+243
+        },
+{
+48,
+243
+        },
+{
+72,
+243
+        },
+{
+96,
+243
+        },
+{
+120,
+243
+        },
+{
+144,
+243
+        },
+{
+168,
+243
+        },
+{
+192,
+243
+        },
+{
+216,
+243
+        },
+{
+240,
+2430
+        },
+{
+264,
+2430
+        },
+{
+288,
+2430
+        },
+{
+312,
+2430
+        },
+{
+336,
+2430
+        },
+{
+360,
+243
+        },
+{
+384,
+243
+        },
+{
+408,
+243
+        },
+{
+432,
+243
+        },
+{
+456,
+243
+        },
+{
+480,
+243
+        },
+{
+504,
+243
+        },
+{
+528,
+243
+        },
+{
+552,
+243
+        },
+{
+576,
+243
+        },
+{
+600,
+243
+        }
+      },
+      analysis={
+        Propionic=0.74528,
+        Valeric=0.03506,
+        Butyric=0.44393,
+        Acetic=10.71349
+      },
+      drymass=0.3649
+    },
+    expert={
+      timestep={
+        dtStart=0.2,
+        dtMax=1,
+        dtMin=1e-05
+      },
+      solverDesc={
+        type="bicgstab",
+        precond={
+          type="gmg",
+          baseSolver="lu",
+          preSmooth=3,
+          smoother={
+            type="sgs"
+          },
+          cycle="V",
+          baseLevel=2,
+          postSmooth=3,
+          adaptive=true,
+          rap=true
+        },
+        convCheck={
+          type="standard",
+          iterations=34,
+          verbose=true,
+          absolute=1e-12,
+          reduction=1e-08
+        }
+      },
+      geometry={
+        subsets={
+          reactorVolSubset="Inner",
+          reactorUpperBnd="Top",
+          reactorLowerBnd="Bot",
+          reactorLeftBnd="SideA",
+          gasPhaseSubset="Head",
+          reactorRightBnd="SideB"
+        },
+        numPreRefs=1,
+        setup_dim=2,
+        headHeight=0.1,
+        grid_name="TestGeom2D.ugx",
+        reactorHeight=1,
+        numRefs=3,
+        yTop=1,
+        reactorWidth=1
+      },
+      reactionSetup={
+        thermodynModell=true,
+        thermodynApproach="factor",
+        inhibitionTerms={
+          inhibitionPH=false,
+          competitiveAcidUptake=false,
+          inhibitionHydrogen={
+            Acidogenesis_LCFA=true,
+            Valeric_Degradation=false,
+            Propionic_Degradation=false,
+            Butyric_Degradation=false
+          },
+          inhibitionAmmonia=false,
+          limitedTrace={
+            Nitrogen=false
+          },
+          limitedMOSpace=false
+        }
+      }
+    },
+    reactionSetup={
+      activeReactions={
+"simpleTwoStage"
+      }
+    },
+    initialValues={
+      pH=8.06,
+      drymass=0.0906,
+      analysis={
+        MS=0.004,
+        AA=0.001,
+        Butyric=0.0025,
+        Carbohydrates=2.7,
+        Acetic=1.5,
+        MO_ButyricValeric=1.9,
+        Lignin=113,
+        Propionic=0.003,
+        Valeric=0.0007,
+        Proteins=0.97,
+        Carbondioxide=0.875,
+        Nitrogen=2.90292,
+        Lipids=0.8,
+        zeroDefault=1e-07,
+        moDefault=1,
+        MO_acetoM=1.8,
+        MO_hydroM=3.1,
+        LCFA=0.003,
+        MO_AcidoMS=6.8,
+        Methane=0.062,
+        Hydrogen=4.23e-09,
+        MO_AcidoLCFA=1.33,
+        MO_AcidoAA=0.99,
+        MO_Propionic=1.1
+      }
+    }
+  }

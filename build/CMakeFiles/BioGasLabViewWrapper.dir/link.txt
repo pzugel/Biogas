@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -Wall -Wno-multichar -Wno-unused-local-typedefs -Wno-maybe-uninitialized -O3 -DNDEBUG -funroll-loops -ftree-vectorize -shared -Wl,-soname,libBioGasLabViewWrapper.so -o ../lib/libBioGasLabViewWrapper.so CMakeFiles/BioGasLabViewWrapper.dir/biogas_spec_vali_wrapper.cpp.o CMakeFiles/BioGasLabViewWrapper.dir/biogas_output_reader_wrapper.cpp.o 

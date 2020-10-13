@@ -1,0 +1,13 @@
+Time	=	1
+Lignin	=	2
+Methane	=	3
+Methane_gas	=	4
+Methane_sum	=	5
+Substrate	=	6
+Carbondioxide	=	7
+Carbondioxide_gas	=	8
+Carbondioxide_sum	=	9
+MO_acetoM	=	10
+Acetic	=	11
+simpleHydrolysis	=	2
+aceto_Methanogenesis	=	3
