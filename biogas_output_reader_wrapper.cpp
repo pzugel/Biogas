@@ -28,7 +28,7 @@ bool readOutputFiles(const char* path_to_outputFiles)
 }
 
 /**
- * Getter method for the plotTree String
+ * Getter method for the outputFilesTreeString String
  * 
  * This string contains data from an outputFiles.lua in a CSV style format. 
  * It is needed to construct the Plot-Tree structure in LabView.
@@ -40,13 +40,13 @@ bool readOutputFiles(const char* path_to_outputFiles)
  *
  * @return All data as String
  */
-const char* getPlotTreeString()
+const char* getTreeString()
 {
-	return biogasOutputReader->plotTreeString.c_str();
+	return biogasOutputReader->outputFilesTreeString.c_str();
 }
 
 /**
- * Getter method for the plotValues String
+ * Getter method for the outputFilesPlotString String
  * 
  * This string contains data from an outputFiles.lua in a CSV style format. 
  * It is needed to select specific columns from .txt output files and generate
@@ -62,9 +62,9 @@ const char* getPlotTreeString()
  *
  * @return All data as String
  */
-const char* getPlotValuesString()
+const char* getPlotString()
 {
-	return biogasOutputReader->plotValuesString.c_str();
+	return biogasOutputReader->outputFilesPlotString.c_str();
 }
 
 /**

@@ -10,6 +10,9 @@
  */
 
 #include "spec_vali_reader/biogas_spec_vali_reader.cpp"
+#include "spec_vali_reader/biogas_spec_writer.cpp"
+#include "spec_vali_reader/biogas_spec_validation.cpp"
+#include "spec_vali_reader/biogas_spec_vali_reader.h"
 
 static BiogasSpecValiReader* biogasReader;
 
@@ -106,9 +109,9 @@ const char* getValidationMessage()
  *
  * @return String of 'LeftCells' with failed validation
  */
-const char* getValidationErrors()
+const char* getValidationErrorParams()
 {
-	return biogasReader->validationErrors.c_str();
+	return biogasReader->validationErrorParams.c_str();
 }
 
 /**
@@ -120,21 +123,21 @@ const char* getValidationErrors()
  * @param specs: Current specification from the LabView Tree (string formatted)
  * @return Bool if the specs are valid
  */
-bool getOutput(const char* specs)
+bool getOutputSpecs(const char* specs)
 {
-	return biogasReader->writeOutput((std::string) specs);
+	return biogasReader->writeOutputSpecs((std::string) specs);
 }
 
 /**
  * Getter method for the output specification
  * 
- * The getOutput() method needs to be called first.
+ * The getOutputSpecs() method needs to be called first.
  * 
  * @return The new specification file as string
  */
 const char* getOutputString()
 {
-	return biogasReader->outputString.c_str();
+	return biogasReader->outputSpecs.c_str();
 }
 
 /**

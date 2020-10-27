@@ -22,7 +22,7 @@ problem = {
 -----------------------------------------------------------------
 	numericalSetup = {
 		sim_starttime = 0,
-		sim_endtime = 1,			-- in hours
+		sim_endtime = 3,			-- in hours
 	},
 
 -----------------------------------------------------------------
@@ -44,7 +44,7 @@ problem = {
 	-----------------------------------------------------------------
 	checkpoint = {
 		doReadCheckpoint = false,
-		--checkpointDir = "../startNoCheckpoint/"
+		-- checkpointDir = "/home/paul/Schreibtisch/Biogas_LabView_Wrapper/example/Sample_Output/"
 	},
 
 -----------------------------------------------------------------

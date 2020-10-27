@@ -14,14 +14,27 @@
 #include <vector>
 #include <fstream>
 #include <regex>
-#include <boost/algorithm/string.hpp>	
+#include <boost/algorithm/string.hpp>
+#include <iostream>
 
+/**
+ * Initialize the BiogasOutputReader
+ *	
+ * Executes all methods to read in the outputFiles.lua and construct the
+ * "outputFilesTreeString" and "outputFilesPlotString" to communicate with
+ * LabView. 
+ * 
+ * @param output_path: The absolute path to the outputFiles.lua
+ * @return Bool if the method was succesfull
+ */
 bool BiogasOutputReader::
 init(const char* output_path)
 {
 	if(this->load((std::string) output_path))
 	{
 		this->readOutputFiles();
+		this->generateTreeString();
+		this->generatePlotString();
 		return true;
 	}
 	else	
@@ -30,6 +43,16 @@ init(const char* output_path)
 	return true;
 }
 
+/**
+ * Load the outputFiles.lua
+ *	
+ * Read in the outputFiles.lua and remove all comments and
+ * formattings (whitespaces, linebreaks, tabs). The "input"
+ * string now is a continous text.
+ * 
+ * @param filepath: The absolute path to the outputFiles.lua
+ * @return Bool if file could be read
+ */
 bool BiogasOutputReader::
 load(std::string filepath)
 {
@@ -65,43 +88,54 @@ load(std::string filepath)
 	return true;
 }
 
-bool BiogasOutputReader::
-readOutputFiles()
+/**
+ * Filter all x Values 
+ *	
+ * Every parameter from the outputFiles.lua needs to
+ * be affiliated to a specific x Value. This method
+ * reads in all data from the x Values and saves them 
+ * in vectors.
+ */
+void BiogasOutputReader:: 
+readXValues(std::vector<std::string> *x_Names, std::vector<std::string> *x_Units, std::vector<std::string> *x_Cols)
 {
-	leftCellsVec = {};
-	indentsVec = {};
-	filenamesVec = {};
-	xNameVec = {};
-	glyphsVec = {};
-	xcolVec = {};
-
-	this->input_modified = this->input;
-
 	std::regex x_value ("x=\\{[a-zA-Z0-9_]+=\\{unit=\"[a-zA-Z0-9\\^\\[\\]]+\",col=[0-9]+");
-	std::regex keys ("keys=\\{");
-	std::regex outputFiles ("outputFiles=\\{");
-
-	std::smatch match_x_values;
-	std::vector<std::string> x_Names = {};
-	std::vector<std::string> x_Units = {};
-	std::vector<std::string> x_Cols = {};
-
 	std::string tmp_string = this->input;
+	std::smatch match_x_values;
 	while (regex_search(tmp_string, match_x_values, x_value)) { 
 		std::string match = match_x_values.str(0);
 		boost::replace_all(match, "{", "");
 
 		std::string::size_type col_pos = match.find(",col=");
-		x_Cols.push_back(match.substr(col_pos+5));
+		x_Cols->push_back(match.substr(col_pos+5));
 
 		std::string::size_type unit_pos = match.find("unit=");
-		x_Units.push_back(match.substr(unit_pos+5, col_pos-unit_pos-5));
+		x_Units->push_back(match.substr(unit_pos+5, col_pos-unit_pos-5));
 
 		std::string::size_type name_pos = match.find("x=");
-		x_Names.push_back(match.substr(name_pos+2, unit_pos-3));
+		x_Names->push_back(match.substr(name_pos+2, unit_pos-3));
 
         tmp_string = match_x_values.suffix().str(); 
     } 
+}
+
+/**
+ * Modify the Input
+ *	
+ * Inserts linebreaks and removes unwanted lines from the 
+ * outputFiles.lua, e.g. the x Values are already read 
+ * in the "readXValues" method so they can be removed.
+ * "input" was a continous string, "input_modified" can 
+ * now be read line by line.
+ */
+void BiogasOutputReader:: 
+modifyInput()
+{
+	this->input_modified = this->input;
+
+	std::regex x_value ("x=\\{[a-zA-Z0-9_]+=\\{unit=\"[a-zA-Z0-9\\^\\[\\]]+\",col=[0-9]+");
+	std::regex keys ("keys=\\{");
+	std::regex outputFiles ("outputFiles=\\{");
 
 	this->input_modified = std::regex_replace(this->input_modified, x_value, "");
 	this->input_modified = std::regex_replace(this->input_modified, keys, "");
@@ -109,6 +143,25 @@ readOutputFiles()
 
 	boost::replace_all(this->input_modified, "{", "{\n");
 	boost::replace_all(this->input_modified, ",", ",\n");
+}
+
+/**
+ * Generate date from the outputFiles.lua
+ *	
+ * Constructs a vector "entries" of type "OutputEntry"
+ * and fills in the data from the outputFiles.lua
+ * 
+ * @return Bool if successful
+ */
+bool BiogasOutputReader::
+readOutputFiles()
+{	
+	this->entries = {};
+	
+	std::vector<std::string> x_Names = {};
+	std::vector<std::string> x_Units = {};
+	std::vector<std::string> x_Cols = {};
+	this->readXValues(&x_Names, &x_Units, &x_Cols);
 
 	std::regex param ("^[a-zA-Z0-9_]+=");
 	std::regex filename ("^filename=");
@@ -117,12 +170,14 @@ readOutputFiles()
 	std::regex names ("^[a-zA-Z0-9_]+=\\{");
 	std::regex y_value ("^y=\\{");
 
+	this->modifyInput();
 	std::istringstream lineIter(this->input_modified);
 	std::string lastFileName = "";
 	std::string lastXCol = "";
 	std::string lastXName = "";
 	std::string lastXUnit = "";
 
+	int ind = -1;
 	for(std::string line; std::getline(lineIter, line); )
 	{	
 		if(std::regex_search(line, param))
@@ -131,47 +186,45 @@ readOutputFiles()
 			{
 				if(std::regex_search(line, y_value))
 				{
-					this->indentsVec.pop_back();
-					this->indentsVec.push_back(0);
-
-					this->glyphsVec.pop_back();
-					this->glyphsVec.push_back(15);
-
-					std::string tmp = this->leftCellsVec.back();
-					this->leftCellsVec.pop_back();
-					this->leftCellsVec.push_back(tmp);
+					this->entries[ind].indent = 0;
+					this->entries[ind].glyph = 15;
+					this->entries[ind].leftCell = this->entries[ind].leftCell;
 				}
 				else
 				{
-					this->indentsVec.push_back(1);
-					this->glyphsVec.push_back(37);
+					ind += 1;
+					// Contruct new Element
+					OutputEntry* newEntry = new OutputEntry();
+					this->entries.push_back(*newEntry);
+
+					this->entries[ind].indent = 1;
+					this->entries[ind].glyph = 37;
 					boost::replace_all(line, "={", "");
-					this->leftCellsVec.push_back(line);
-					this->filenamesVec.push_back(lastFileName);
+					this->entries[ind].leftCell = line;
+					this->entries[ind].filename = lastFileName;
 				}
 			} 
 			else if(std::regex_search(line, filename))	
 			{
-				this->filenamesVec.pop_back();
 				boost::replace_all(line, ",", "");
 				boost::replace_all(line, "\"", "");
 				boost::replace_all(line, "filename=", "");
 				lastFileName = line;
-				this->filenamesVec.push_back(line);
-				this->colVec.push_back("");
-				this->unitVec.push_back("");
-
+				this->entries[ind].filename = line;
+				this->entries[ind].column = "";
+				this->entries[ind].unit = "";	
+				
 				lastXCol = std::to_string(std::stoi(x_Cols.front())-1);
-				this->xcolVec.push_back(lastXCol);
+				this->entries[ind].xValueColumn = lastXCol;
 				x_Cols.erase(x_Cols.begin());
 				
 				lastXUnit = x_Units.front();
 				boost::replace_all(lastXUnit, "\"", "");
-				this->xUnitVec.push_back(lastXUnit);
+				this->entries[ind].xValueUnit = lastXUnit;
 				x_Units.erase(x_Units.begin());
 				
 				lastXName = x_Names.front();
-				this->xNameVec.push_back(lastXName);
+				this->entries[ind].xValueName = lastXName;
 				x_Names.erase(x_Names.begin());
 			}
 			else if(std::regex_search(line, col))	
@@ -179,10 +232,10 @@ readOutputFiles()
 				boost::replace_all(line, "col=", "");
 				boost::replace_all(line, "}", "");
 				boost::replace_all(line, ",", "");
-				this->colVec.push_back(std::to_string(std::stoi(line)-1));
-				this->xcolVec.push_back(lastXCol);
-				this->xNameVec.push_back(lastXName);
-				this->xUnitVec.push_back(lastXUnit);
+				this->entries[ind].column = std::to_string(std::stoi(line)-1);
+				this->entries[ind].xValueColumn = lastXCol;
+				this->entries[ind].xValueName = lastXName;
+				this->entries[ind].xValueUnit = lastXUnit;
 			}
 			else if(std::regex_search(line, unit))	
 			{
@@ -190,35 +243,45 @@ readOutputFiles()
 				boost::replace_all(line, "}", "");
 				boost::replace_all(line, ",", "");
 				boost::replace_all(line, "\"", "");
-				this->unitVec.push_back(line);
-			}	
+				this->entries[ind].unit = line;
+			}			
 		}	
 	}
-	this->number_of_lines_output = this->leftCellsVec.size();
 
-	/**
-	 *	Fill "plotTreeString" and "plotValuesString" to communicate with LabVIew
-	 */
-
-	this->plotTreeString = "";
-	for(int i=0; i<this->number_of_lines_output; i++)
-	{
-		this->plotTreeString += this->leftCellsVec[i] + " " + 
-			std::to_string(this->indentsVec[i]) + " " + 
-			std::to_string(this->glyphsVec[i]) + "\n";		
-	}
-	this->plotTreeString.resize(this->plotTreeString.size() - 1);
-
-	this->plotValuesString = "";
-	for(int i=0; i<this->number_of_lines_output; i++)
-	{
-		this->plotValuesString += this->leftCellsVec[i] +  " " + this->unitVec[i] + " " + 
-			this->colVec[i] + " " + 
-			this->filenamesVec[i] + " " +		
-			this->xcolVec[i] + " " +
-			this->xNameVec[i] + " " + this->xUnitVec[i] + "\n";
-	}
-	this->plotValuesString.resize(this->plotValuesString.size() - 1);
-	
+	this->number_of_lines_output = this->entries.size();
 	return true;
+}
+
+/**
+ * Write the "outputFilesTreeString" from the generated "entries"
+ */
+void BiogasOutputReader::
+generateTreeString()
+{	
+	this->outputFilesTreeString = "";
+	for(int i=0; i<this->number_of_lines_output; i++)
+	{
+		this->outputFilesTreeString += this->entries[i].leftCell + " " + 
+			std::to_string(this->entries[i].indent) + " " + 
+			std::to_string(this->entries[i].glyph) + "\n";		
+	}
+	this->outputFilesTreeString.resize(this->outputFilesTreeString.size() - 1);
+}
+
+/**
+ * Write the "outputFilesPlotString" from the generated "entries"
+ */
+void BiogasOutputReader::
+generatePlotString()
+{	
+	this->outputFilesPlotString = "";
+	for(int i=0; i<this->number_of_lines_output; i++)
+	{
+		this->outputFilesPlotString += this->entries[i].leftCell +  " " + this->entries[i].unit + " " + 
+			this->entries[i].column + " " + 
+			this->entries[i].filename + " " +		
+			this->entries[i].xValueColumn + " " +
+			this->entries[i].xValueName + " " + this->entries[i].xValueUnit + "\n";
+	}
+	this->outputFilesPlotString.resize(this->outputFilesPlotString.size() - 1);
 }

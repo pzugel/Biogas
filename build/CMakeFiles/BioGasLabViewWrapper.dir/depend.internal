@@ -5,8 +5,13 @@ CMakeFiles/BioGasLabViewWrapper.dir/biogas_output_reader_wrapper.cpp.o
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/biogas_output_reader_wrapper.cpp
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/output_reader/biogas_output_reader.cpp
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/output_reader/biogas_output_reader.h
+ /home/paul/Schreibtisch/Biogas_LabView_Wrapper/output_reader/output_entry.h
 CMakeFiles/BioGasLabViewWrapper.dir/biogas_spec_vali_wrapper.cpp.o
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/biogas_spec_vali_wrapper.cpp
+ /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/biogas_spec_data_generate.cpp
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/biogas_spec_vali_reader.cpp
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/biogas_spec_vali_reader.h
+ /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/biogas_spec_validation.cpp
+ /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/biogas_spec_writer.cpp
+ /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/biogas_vali_data_generate.cpp
  /home/paul/Schreibtisch/Biogas_LabView_Wrapper/spec_vali_reader/table_entry.h

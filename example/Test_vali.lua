@@ -2,7 +2,7 @@ problem = {
     reactorSetup = {
         operatingTemperature = {
 		range = {
-                    values = {8.5, 400.12}
+                    values = {0, 400.12}
                 },
             type = "Double",
         },

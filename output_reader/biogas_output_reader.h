@@ -11,27 +11,35 @@
 
 #include <string>
 #include <vector>
+#include "output_entry.h"
 
+/**
+ * Class to save all Data from outputFiles.lua
+ *
+ * Following parameters are used to communicate with LabView:
+ *
+ * @param number_of_lines_output: Number of total parameters
+ * @param outputFilesTreeString: All information needed to construct the LabView tree (CSV-style string)
+ * @param outputFilesPlotString: All information to plot the values (CSV-style string)
+ *
+ * Following parameters are internal:
+ *
+ * @param input: Input outputFiles.lua
+ * @param input_modified: Modified input for easier parsing
+ * @param entries: Internal container for all data
+ */
 class BiogasOutputReader { 
 	public:
-		std::string plotTreeString;
-		std::string plotValuesString;
-
 		int number_of_lines_output;
+
+		std::string outputFilesTreeString;
+		std::string outputFilesPlotString;
 
 	private:
 		std::string input; //original input whithout linebreaks
 		std::string input_modified; //Formatted original input with linebreaks
 
-		std::vector<std::string> leftCellsVec;
-		std::vector<std::string> filenamesVec;
-		std::vector<std::string> colVec;
-		std::vector<std::string> xcolVec;
-		std::vector<std::string> unitVec;
-		std::vector<std::string> xNameVec;
-		std::vector<std::string> xUnitVec;
-		std::vector<int> indentsVec;
-		std::vector<int> glyphsVec;
+		std::vector<OutputEntry> entries;
 
 	public:
 		BiogasOutputReader(){};
@@ -40,5 +48,11 @@ class BiogasOutputReader {
 	private:
 		bool load(std::string);
 		bool readOutputFiles();
+		void generateTreeString();
+		void generatePlotString();
+		void modifyInput();
+		void readXValues(std::vector<std::string>*, std::vector<std::string>*, std::vector<std::string>*);
 };
+
+
 

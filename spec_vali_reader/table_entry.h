@@ -11,6 +11,21 @@
 
 #include <string>
 
+/**
+ * Class to represents one row in the LabView Tree structure
+ *
+ * Contains all information given by a validation and specification
+ * file concerning one parameter.
+ *
+ * @param indent: The indentation in the tree structure
+ * @param glyph: Visual symbol in the tree strucutre (e.g. a folder symbol)
+ * @param leftCell: Name of the parameter
+ * @param type: Data type of the parameter (e.g. int, string)
+ * @param defaultVal: Default value given by the validation file
+ * @param specVal: Specification of the parameter
+ * @param rangeMin: Optional range minimum (onyl for validation)
+ * @param rangeMax: Optional range maximum (onyl for validation)
+ */
 class TableEntry { 
 	public:
 		TableEntry(){};
@@ -19,8 +34,8 @@ class TableEntry {
 		int glyph = 0;
 		std::string leftCell = "";
 		std::string type = "";
-		std::string defaultVal = ""; //Contains the default values
-		std::string specVal = ""; //Contains Values from Spec file
+		std::string defaultVal = "";
+		std::string specVal = "";
 		std::string rangeMin = "";
 		std::string rangeMax = "";
 };
